@@ -5,7 +5,8 @@ data "template_file" "salt-minion-install" {
 data "template_file" "volumes-mount" {
   template = file("scripts/volumes.sh")
     vars = {
-    DEVICE = var.INSTANCE_DEVICE_NAME
+    APP_DEVICE = var.APP_VOL_NAME
+    LOG_DEVICE = var.LOG_VOL_NAME	
   }
 }
 
