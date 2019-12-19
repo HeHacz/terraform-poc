@@ -1,9 +1,9 @@
 data "template_file" "salt-minion-install" {
-  template = file("../modules/instances/scripts/init.cfg")
+  template = file("./terraform/eu-central-1/modules/instances/scripts/init.cfg")
 }
 
 data "template_file" "volumes-mount" {
-  template = file("../modules/instances/scripts/volumes.sh")
+  template = file("./terraform/eu-central-1/modules/instances/scripts/volumes.sh")
     vars = {
     APP_DEVICE = var.APP_VOL_NAME
     LOG_DEVICE = var.LOG_VOL_NAME	
