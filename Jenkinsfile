@@ -1,4 +1,4 @@
-// Jenkinsfile ver 0.1
+// Jenkinsfile
 String credentialsId = 'awsCredentials'
 
 
