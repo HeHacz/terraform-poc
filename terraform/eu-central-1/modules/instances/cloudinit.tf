@@ -1,3 +1,4 @@
+#cloudinit config
 data "template_file" "salt-minion-install" {
   template = file("./terraform/eu-central-1/modules/instances/scripts/init.cfg")
 }
