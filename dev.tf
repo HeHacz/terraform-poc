@@ -1,11 +1,11 @@
 module "poc-network" {
-  source     = "/terraform/eu-central-1/modules/vpc"
+  source     = "./terraform/eu-central-1/modules/vpc"
   ENV        = "dev"
   AWS_REGION = var.AWS_REGION
 }
 
 module "instances" {
-  source         = "/terraform/eu-central-1/modules/instances"
+  source         = "./terraform/eu-central-1/modules/instances"
   ENV            = "dev"
   AWS_REGION	 = var.AWS_REGION
   VPC_ID         = module.poc-network.vpc_id
