@@ -18,7 +18,7 @@ resource "aws_route_table" "poc-network-private" {
   }
 
   tags = {
-    Name = "poc-network-private-1"
+    Name = "poc-network-${var.ENV}-private-1"
   }
 }
 

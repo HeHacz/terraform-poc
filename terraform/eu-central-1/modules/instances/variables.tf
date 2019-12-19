@@ -1,5 +1,22 @@
+variable "ENV" {
+}
+
+variable "INSTANCE_TYPE" {
+  default = "t2.micro"
+}
+
+variable "PUBLIC_SUBNETS" {
+  type = list
+}
+
+variable "PRIVATE_SUBNETS" {
+  type = list
+}
+
+variable "VPC_ID" {
+}
+
 variable "AWS_REGION" {
-  default = "eu-central-1"
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
@@ -13,7 +30,7 @@ variable "PATH_TO_PUBLIC_KEY" {
 variable "AMIS" {
   type = map(string)
   default = {
-    eu-central-1 = "ami-02df9ea15c1778c9c"
+    eu-central-1 = "ami-0cc0a36f626a4fdf5"
   }
 }
 

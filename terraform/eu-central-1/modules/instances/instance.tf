@@ -1,19 +1,19 @@
 #HTTPD - server01 inicialization
 resource "aws_instance" "httpd-server01" {
   ami           = var.AMIS[var.AWS_REGION]
-  instance_type = "t2.micro"
+  instance_type = var.INSTANCE_TYPE
   tags = { 
-   Name = "httpd-server01"
+   Name = "httpd-${var.ENV}-server01"
    }
 
   # the VPC subnet
-  subnet_id = aws_subnet.main-public-1.id
+  subnet_id = element(var.PRIVATE_SUBNETS, 0)
 
   # the security group
-  vpc_security_group_ids = [aws_security_group.allow-ssh.id]
+  vpc_security_group_ids = [aws_security_group.httpd_server.id]
 
   # the public SSH key
-  key_name = aws_key_pair.mykeypair.key_name
+  #key_name = aws_key_pair.mykeypair.key_name
   
   # user data
   user_data = data.template_cloudinit_config.cloudinit-httpd.rendered
@@ -22,7 +22,7 @@ resource "aws_instance" "httpd-server01" {
 resource "aws_ebs_volume" "ebs-volume-1" {
   availability_zone = "eu-central-1a"
   size              = 5
-  type              = "io1"
+  type              = "gp2"
   tags = {
     Name = var.APP_VOL_TAG
   }
@@ -52,19 +52,19 @@ resource "aws_volume_attachment" "ebs-volume-2-attachment" {
 #HTTPD - server02 inicialization
 resource "aws_instance" "httpd-server02" {
   ami           = var.AMIS[var.AWS_REGION]
-  instance_type = "t2.micro"
+  instance_type = var.INSTANCE_TYPE
   tags = { 
-   Name = "httpd-server02"
+   Name = "httpd-${var.ENV}-server02"
    }
 
   # the VPC subnet
-  subnet_id = aws_subnet.main-public-1.id
+  subnet_id = element(var.PRIVATE_SUBNETS, 1)
 
   # the security group
-  vpc_security_group_ids = [aws_security_group.allow-ssh.id]
+  vpc_security_group_ids = [aws_security_group.httpd_server.id]
 
   # the public SSH key
-  key_name = aws_key_pair.mykeypair.key_name
+  #key_name = aws_key_pair.mykeypair.key_name
   
   # user data
   user_data = data.template_cloudinit_config.cloudinit-httpd.rendered
@@ -72,9 +72,9 @@ resource "aws_instance" "httpd-server02" {
 }
 
 resource "aws_ebs_volume" "ebs-volume-3" {
-  availability_zone = "eu-central-1a"
+  availability_zone = "eu-central-1b"
   size              = 5
-  type              = "io1"
+  type              = "gp2"
   tags = {
     Name = var.APP_VOL_TAG
   }
@@ -87,7 +87,7 @@ resource "aws_volume_attachment" "ebs-volume-3-attachment" {
 }
 
 resource "aws_ebs_volume" "ebs-volume-4" {
-  availability_zone = "eu-central-1a"
+  availability_zone = "eu-central-1b"
   size              = 500
   type              = "st1"
   tags = {
@@ -105,19 +105,19 @@ resource "aws_volume_attachment" "ebs-volume-4-attachment" {
 #LB-Serverinicialization
 resource "aws_instance" "lb-server" {
   ami           = var.AMIS[var.AWS_REGION]
-  instance_type = "t2.micro"
+  instance_type = var.INSTANCE_TYPE
   tags = { 
-   Name = "lb-server"
+   Name = "lb-${var.ENV}-server"
    }
 
   # the VPC subnet
-  subnet_id = aws_subnet.main-public-1.id
+  subnet_id = element(var.PUBLIC_SUBNETS, 0)
 
   # the security group
-  vpc_security_group_ids = [aws_security_group.allow-ssh.id]
+  vpc_security_group_ids = [aws_security_group.httpd_server.id]
 
   # the public SSH key
-  key_name = aws_key_pair.mykeypair.key_name
+  #key_name = aws_key_pair.mykeypair.key_name
   
   # user data
   user_data = data.template_cloudinit_config.cloudinit-lb.rendered
