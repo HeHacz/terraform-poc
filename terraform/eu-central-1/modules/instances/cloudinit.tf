@@ -106,8 +106,10 @@ data "template_cloudinit_config" "cloudinit-lb" {
   
   part { 
     content_type = "text/x-shellscript"
-    content      = data.template_file.salt-minion-config.rendered
+    content      = data.template_file.lb-config.rendered
     }
+  
+  }
 }
 
 
