@@ -40,8 +40,8 @@ if [ "`echo -n $DEVICE_FS`" == "" ] ; then
   mkfs.ext4 /dev/data/volume2
 fi
 
-mkdir -p /usr/local/apache2
-mkdir -p /var/log/httpd
+mkdir -p /usr/local/html
+mkdir -p /var/log/apache2
 if grep -q '/dev/data/volume1 /usr/local/apps ext4 defaults 0 0' /etc/fstab; then 
 	echo
 else

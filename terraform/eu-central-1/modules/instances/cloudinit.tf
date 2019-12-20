@@ -10,12 +10,22 @@ data "template_file" "salt-minion-config" {
   # }
 
 
-data "template_file" "salt-minion-config" {
+data "template_file" "lb-config" {
   template = file("./terraform/eu-central-1/modules/instances/scripts/lb.sh")
   vars = {
   HTTPD01_IP = aws_instance.httpd-server01.private_ip
   HTTPD02_IP = aws_instance.httpd-server02.private_ip
   }
+}
+
+data "template_file" "httpd_01-config" {
+  template = file("./terraform/eu-central-1/modules/instances/scripts/httpd_01.sh")
+
+}
+
+data "template_file" "httpd_02-config" {
+  template = file("./terraform/eu-central-1/modules/instances/scripts/httpd_02.sh")
+
 }
 
 data "template_file" "volumes-mount" {
@@ -35,7 +45,7 @@ data "template_file" "volumes-mount" {
   # template = file("./terraform/eu-central-1/modules/instances/scripts/salt-master-config.sh")
 # }
 
-data "template_cloudinit_config" "cloudinit-httpd" {
+data "template_cloudinit_config" "cloudinit-httpd01" {
   gzip          = false
   base64_encode = false
 
@@ -52,6 +62,34 @@ data "template_cloudinit_config" "cloudinit-httpd" {
   part { 
     content_type = "text/x-shellscript"
     content      = data.template_file.salt-minion-config.rendered
+    }
+     part { 
+    content_type = "text/x-shellscript"
+    content      = data.template_file.httpd_01-config.rendered
+    }
+}
+
+data "template_cloudinit_config" "cloudinit-httpd02" {
+  gzip          = false
+  base64_encode = false
+
+   part {
+    filename     = "init.cfg"
+    content_type = "text/cloud-config"
+    content      = data.template_file.salt-minion-install.rendered
+  }
+  
+  part {
+    content_type = "text/x-shellscript"
+    content      = data.template_file.volumes-mount.rendered
+  }
+  part { 
+    content_type = "text/x-shellscript"
+    content      = data.template_file.salt-minion-config.rendered
+    }
+     part { 
+    content_type = "text/x-shellscript"
+    content      = data.template_file.httpd_02-config.rendered
     }
 }
 
