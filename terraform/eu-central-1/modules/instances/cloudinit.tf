@@ -13,8 +13,8 @@ data "template_file" "salt-minion-config" {
 data "template_file" "lb-config" {
   template = file("./terraform/eu-central-1/modules/instances/scripts/lb.sh")
   vars = {
-  HTTPD01_IP = aws_instance.httpd-server01.private_ip
-  HTTPD02_IP = aws_instance.httpd-server02.private_ip
+  HTTPD01-IP = aws_instance.httpd-server01.private_ip
+  HTTPD02-IP = aws_instance.httpd-server02.private_ip
   }
 }
 
