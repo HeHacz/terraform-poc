@@ -122,3 +122,24 @@ resource "aws_instance" "lb-server" {
   # user data
   user_data = data.template_cloudinit_config.cloudinit-lb.rendered
 }
+
+#SALT MASTER -Server inicialization
+resource "aws_instance" "salt-master-server" {
+  ami           = var.AMIS[var.AWS_REGION]
+  instance_type = var.INSTANCE_TYPE
+  tags = { 
+   Name = "salt-master-${var.ENV}-server"
+   }
+
+  # the VPC subnet
+  subnet_id = element(var.PUBLIC_SUBNETS, 1)
+
+  # the security group
+  vpc_security_group_ids = [aws_security_group.allow-ssh.id]
+
+  # the public SSH key
+  key_name = "frankfurt_key_pair"
+  
+  # user data
+  user_data = data.template_cloudinit_config.cloudinit-salt-master.rendered
+}

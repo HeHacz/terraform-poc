@@ -15,6 +15,12 @@ resource "aws_security_group" "allow-ssh" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+    ingress {
+    from_port   = 4505
+    to_port     = 4506
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags = {
     Name = "allow-ssh"
   }
@@ -47,6 +53,12 @@ resource "aws_security_group" "httpd_server" {
   ingress {
     from_port   = 443
     to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+     ingress {
+    from_port   = 4505
+    to_port     = 4506
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

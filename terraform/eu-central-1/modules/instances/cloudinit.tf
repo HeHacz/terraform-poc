@@ -11,6 +11,15 @@ data "template_file" "volumes-mount" {
   }
 }
 
+
+data "template_file" "salt-master-install" {
+  template = file("./terraform/eu-central-1/modules/instances/scripts/salt-init.cfg")
+}
+
+data "template_file" "salt-master-config" {
+  template = file("./terraform/eu-central-1/modules/instances/scripts/salt-master-config.sh")
+}
+
 data "template_cloudinit_config" "cloudinit-httpd" {
   gzip          = false
   base64_encode = false
@@ -36,5 +45,22 @@ data "template_cloudinit_config" "cloudinit-lb" {
     filename     = "init.cfg"
     content_type = "text/cloud-config"
     content      = data.template_file.salt-minion-install.rendered
+  }
+}
+
+
+data "template_cloudinit_config" "cloudinit-salt-master" {
+  gzip          = false
+  base64_encode = false
+
+  part {
+    filename     = "salt-init.cfg"
+    content_type = "text/cloud-config"
+    content      = data.template_file.salt-master-install.rendered
+  }
+  
+    part {
+    content_type = "text/x-shellscript"
+    content      = data.template_file.salt-master-config.rendered
   }
 }
