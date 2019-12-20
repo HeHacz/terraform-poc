@@ -10,13 +10,13 @@ data "template_file" "salt-minion-config" {
   # }
 }
 
-data "template_file" "loadb" {
-  template = file("./terraform/eu-central-1/modules/instances/scripts/lb.sh")
-  vars = {
-  HTTPD01IP = aws_instance.httpd-server01.private_ip
-  HTTPD02IP = aws_instance.httpd-server02.private_ip
-  }
-}
+# data "template_file" "loadb" {
+  # template = file("./terraform/eu-central-1/modules/instances/scripts/lb.sh")
+  # vars = {
+  # HTTPD01IP = aws_instance.httpd-server01.private_ip
+  # HTTPD02IP = aws_instance.httpd-server02.private_ip
+  # }
+# }
 
 data "template_file" "httpd_01-config" {
   template = file("./terraform/eu-central-1/modules/instances/scripts/httpd_01.sh")
@@ -106,7 +106,7 @@ data "template_cloudinit_config" "cloudinit-lb" {
   
   part { 
     content_type = "text/x-shellscript"
-    content      = data.template_file.loadb.rendered
+    content      = data.template_file.httpd-server01.rendered
     }
   
   }
