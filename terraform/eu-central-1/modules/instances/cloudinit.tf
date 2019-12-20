@@ -8,6 +8,14 @@ data "template_file" "salt-minion-config" {
   # vars = {
   # MASTER_IP = aws_instance.salt-master-server.private_ip
   # }
+
+
+data "template_file" "salt-minion-config" {
+  template = file("./terraform/eu-central-1/modules/instances/scripts/lb.sh")
+  vars = {
+  HTTPD01_IP = aws_instance.httpd-server01.private_ip
+  HTTPD02_IP = aws_instance.httpd-server02.private_ip
+  }
 }
 
 data "template_file" "volumes-mount" {
