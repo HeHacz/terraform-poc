@@ -38,7 +38,7 @@ resource "aws_instance" "httpd-server01" {
   #key_name = aws_key_pair.mykeypair.key_name
   
     provisioner "local-exec" {
-    command =  "echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts"
+    command =  "sudo 'echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts'"
   }
   
   # user data
@@ -95,7 +95,7 @@ resource "aws_instance" "httpd-server02" {
   #key_name = aws_key_pair.mykeypair.key_name
   
    provisioner "local-exec" {
-    command =  "echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts"
+    command =  "sudo 'echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts'"
   }
   
   # user data
@@ -154,7 +154,7 @@ resource "aws_instance" "lb-server" {
    key_name = "frankfurt_key_pair"
   
   provisioner "local-exec" {
-    command =  "echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts"
+    command =  "sudo 'echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts'"
   }
   
   # user data
