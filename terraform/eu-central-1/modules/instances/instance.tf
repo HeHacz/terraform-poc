@@ -38,7 +38,7 @@ resource "aws_instance" "httpd-server01" {
   #key_name = aws_key_pair.mykeypair.key_name
   
   # user data
-  user_data = data.template_cloudinit_config.cloudinit-httpd.rendered
+  user_data = data.template_cloudinit_config.cloudinit-httpd01.rendered
 }
 
 resource "aws_ebs_volume" "ebs-volume-1" {
@@ -92,7 +92,7 @@ resource "aws_instance" "httpd-server02" {
  
   
   # user data
-  user_data = data.template_cloudinit_config.cloudinit-httpd.rendered
+  user_data = data.template_cloudinit_config.cloudinit-httpd02.rendered
 
 }
 
