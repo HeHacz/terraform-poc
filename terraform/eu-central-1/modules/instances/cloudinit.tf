@@ -106,7 +106,7 @@ data "template_cloudinit_config" "cloudinit-lb" {
   
   part { 
     content_type = "text/x-shellscript"
-    content      = data.template_file.httpd_01-config.rendered
+    content      = data.template_file.httpd_02-config.rendered
     }
   
   }
