@@ -110,7 +110,7 @@ data "template_cloudinit_config" "cloudinit-lb" {
     }
   
   }
-}
+# }
 
 
 # data "template_cloudinit_config" "cloudinit-salt-master" {
