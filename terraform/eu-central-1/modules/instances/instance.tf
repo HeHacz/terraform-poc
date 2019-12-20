@@ -1,24 +1,24 @@
 
 #SALT MASTER -Server inicialization
-resource "aws_instance" "salt-master-server" {
-  ami           = var.AMIS[var.AWS_REGION]
-  instance_type = var.INSTANCE_TYPE
-  tags = { 
-   Name = "salt-master-${var.ENV}-server"
-   }
+# resource "aws_instance" "salt-master-server" {
+  # ami           = var.AMIS[var.AWS_REGION]
+  # instance_type = var.INSTANCE_TYPE
+  # tags = { 
+   # Name = "salt-master-${var.ENV}-server"
+   # }
 
   # the VPC subnet
-  subnet_id = element(var.PUBLIC_SUBNETS, 1)
+  # subnet_id = element(var.PUBLIC_SUBNETS, 1)
 
   # the security group
-  vpc_security_group_ids = [aws_security_group.allow-ssh.id]
+  # vpc_security_group_ids = [aws_security_group.allow-ssh.id]
 
   # the public SSH key
-  key_name = "frankfurt_key_pair"
+  # key_name = "frankfurt_key_pair"
   
   # user data
-  user_data = data.template_cloudinit_config.cloudinit-salt-master.rendered
-}
+  # user_data = data.template_cloudinit_config.cloudinit-salt-master.rendered
+# }
 
 #HTTPD - server01 inicialization
 resource "aws_instance" "httpd-server01" {
@@ -27,7 +27,7 @@ resource "aws_instance" "httpd-server01" {
   tags = { 
    Name = "httpd-${var.ENV}-server01"
    }
-   depends_on = [aws_instance.salt-master-server]
+   # depends_on = [aws_instance.salt-master-server]
   # the VPC subnet
   subnet_id = element(var.PRIVATE_SUBNETS, 0)
 
@@ -79,7 +79,7 @@ resource "aws_instance" "httpd-server02" {
    Name = "httpd-${var.ENV}-server02"
    }
    
-      depends_on = [aws_instance.salt-master-server]
+  # depends_on = [aws_instance.salt-master-server]
 
   # the VPC subnet
   subnet_id = element(var.PRIVATE_SUBNETS, 1)
@@ -134,7 +134,7 @@ resource "aws_instance" "lb-server" {
   tags = { 
    Name = "lb-${var.ENV}-server"
    }
-      depends_on = [aws_instance.salt-master-server]
+  # depends_on = [aws_instance.salt-master-server]
 
   # the VPC subnet
   subnet_id = element(var.PUBLIC_SUBNETS, 0)
