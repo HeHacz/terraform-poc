@@ -151,6 +151,7 @@ resource "aws_instance" "lb-server" {
 
   # the public SSH key
   #key_name = aws_key_pair.mykeypair.key_name
+   key_name = "frankfurt_key_pair"
   
   provisioner "local-exec" {
     command =  "echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts"
