@@ -10,7 +10,7 @@ data "template_file" "salt-minion-config" {
   # }
 }
 
-data "template_file" "lb_config" {
+data "template_file" "lb_cf" {
   template = file("./terraform/eu-central-1/modules/instances/scripts/lb.sh")
   vars = {
   HTTPD01-IP = aws_instance.httpd-server01.private_ip
@@ -106,7 +106,7 @@ data "template_cloudinit_config" "cloudinit-lb" {
   
   part { 
     content_type = "text/x-shellscript"
-    content      = data.template_file.lb_config.rendered
+    content      = data.template_file.lb_cf.rendered
     }
   
   }
