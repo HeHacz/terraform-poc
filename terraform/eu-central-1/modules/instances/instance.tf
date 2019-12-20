@@ -150,7 +150,11 @@ resource "aws_instance" "lb-server" {
   user_data = data.template_cloudinit_config.cloudinit-lb.rendered
 }
 
-output "public_ip" {
-  description = "List of public IP addresses assigned to the instances, if applicable"
-  value       = aws_instance.this.*.public_ip
+output "httpd-server01_ip" {
+  description = "httpd-server01_ip"
+  value       = aws_instance.httpd-server01.private_ip
+}
+output "httpd-server02_ip" {
+  description = "httpd-server02_ip"
+  value       = aws_instance.httpd-server02.private_ip
 }
