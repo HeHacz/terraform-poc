@@ -10,4 +10,4 @@
 # echo "ProxySet lvmetod=byrequests" >> /etc/apache2/conf.d/lb.conf
 # echo "</Proxy>" >> /etc/apache2/conf.d/lb.conf
 
-systemclt restart apache2
+systemctl restart apache2
