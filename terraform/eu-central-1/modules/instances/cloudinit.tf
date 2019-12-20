@@ -6,7 +6,7 @@ data "template_file" "salt-minion-install" {
 data "template_file" "salt-minion-config" {
   template = file("./terraform/eu-central-1/modules/instances/scripts/salt-minion-config.sh")
   vars = {
-  MASTER_IP = aws_instance.salt-master-server.private_ip;
+  MASTER_IP = aws_instance.salt-master-server.private_ip
   }
 }
 
@@ -44,6 +44,7 @@ data "template_cloudinit_config" "cloudinit-httpd" {
   part { 
     content_type = "text/x-shellscript"
     content      = data.template_file.salt-minion-config.rendered
+    }
 }
 
 
