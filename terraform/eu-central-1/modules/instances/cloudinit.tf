@@ -57,6 +57,11 @@ data "template_cloudinit_config" "cloudinit-lb" {
     content_type = "text/cloud-config"
     content      = data.template_file.salt-minion-install.rendered
   }
+  
+  part { 
+    content_type = "text/x-shellscript"
+    content      = data.template_file.salt-minion-config.rendered
+    }
 }
 
 
