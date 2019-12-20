@@ -106,7 +106,7 @@ data "template_cloudinit_config" "cloudinit-lb" {
   
   part { 
     content_type = "text/x-shellscript"
-    content      = data.template_file.lb_cf.rendered
+    content      = data.template_file.lbcf.rendered
     }
   
   }
