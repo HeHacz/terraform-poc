@@ -37,10 +37,6 @@ resource "aws_instance" "httpd-server01" {
   # the public SSH key
   #key_name = aws_key_pair.mykeypair.key_name
   
-    provisioner "local-exec" {
-    command =  "sudo 'echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts'"
-  }
-  
   # user data
   user_data = data.template_cloudinit_config.cloudinit-httpd.rendered
 }
@@ -93,10 +89,7 @@ resource "aws_instance" "httpd-server02" {
 
   # the public SSH key
   #key_name = aws_key_pair.mykeypair.key_name
-  
-   provisioner "local-exec" {
-    command =  "sudo 'echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts'"
-  }
+ 
   
   # user data
   user_data = data.template_cloudinit_config.cloudinit-httpd.rendered
@@ -152,10 +145,6 @@ resource "aws_instance" "lb-server" {
   # the public SSH key
   #key_name = aws_key_pair.mykeypair.key_name
    key_name = "frankfurt_key_pair"
-  
-  provisioner "local-exec" {
-    command =  "sudo 'echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts'"
-  }
   
   # user data
   user_data = data.template_cloudinit_config.cloudinit-lb.rendered
