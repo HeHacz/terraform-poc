@@ -27,7 +27,7 @@ resource "aws_instance" "httpd-server01" {
   tags = { 
    Name = "httpd-${var.ENV}-server01"
    }
-   depends_on = ["aws_instance.salt-master-server"]
+   depends_on = [aws_instance.salt-master-server]
   # the VPC subnet
   subnet_id = element(var.PRIVATE_SUBNETS, 0)
 
@@ -79,7 +79,7 @@ resource "aws_instance" "httpd-server02" {
    Name = "httpd-${var.ENV}-server02"
    }
    
-      depends_on = ["aws_instance.salt-master-server"]
+      depends_on = [aws_instance.salt-master-server]
 
   # the VPC subnet
   subnet_id = element(var.PRIVATE_SUBNETS, 1)
@@ -134,7 +134,7 @@ resource "aws_instance" "lb-server" {
   tags = { 
    Name = "lb-${var.ENV}-server"
    }
-      depends_on = ["aws_instance.salt-master-server"]
+      depends_on = [aws_instance.salt-master-server]
 
   # the VPC subnet
   subnet_id = element(var.PUBLIC_SUBNETS, 0)
