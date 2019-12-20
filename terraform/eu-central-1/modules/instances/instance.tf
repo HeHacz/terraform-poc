@@ -1,3 +1,25 @@
+
+#SALT MASTER -Server inicialization
+resource "aws_instance" "salt-master-server" {
+  ami           = var.AMIS[var.AWS_REGION]
+  instance_type = var.INSTANCE_TYPE
+  tags = { 
+   Name = "salt-master-${var.ENV}-server"
+   }
+
+  # the VPC subnet
+  subnet_id = element(var.PUBLIC_SUBNETS, 1)
+
+  # the security group
+  vpc_security_group_ids = [aws_security_group.allow-ssh.id]
+
+  # the public SSH key
+  key_name = "frankfurt_key_pair"
+  
+  # user data
+  user_data = data.template_cloudinit_config.cloudinit-salt-master.rendered
+}
+
 #HTTPD - server01 inicialization
 resource "aws_instance" "httpd-server01" {
   ami           = var.AMIS[var.AWS_REGION]
@@ -5,7 +27,7 @@ resource "aws_instance" "httpd-server01" {
   tags = { 
    Name = "httpd-${var.ENV}-server01"
    }
-
+   depends_on = ["aws_instance.salt-master-server"]
   # the VPC subnet
   subnet_id = element(var.PRIVATE_SUBNETS, 0)
 
@@ -14,6 +36,10 @@ resource "aws_instance" "httpd-server01" {
 
   # the public SSH key
   #key_name = aws_key_pair.mykeypair.key_name
+  
+    provisioner "local-exec" {
+    command =  "echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts"
+  }
   
   # user data
   user_data = data.template_cloudinit_config.cloudinit-httpd.rendered
@@ -56,6 +82,8 @@ resource "aws_instance" "httpd-server02" {
   tags = { 
    Name = "httpd-${var.ENV}-server02"
    }
+   
+      depends_on = ["aws_instance.salt-master-server"]
 
   # the VPC subnet
   subnet_id = element(var.PRIVATE_SUBNETS, 1)
@@ -65,6 +93,10 @@ resource "aws_instance" "httpd-server02" {
 
   # the public SSH key
   #key_name = aws_key_pair.mykeypair.key_name
+  
+   provisioner "local-exec" {
+    command =  "echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts"
+  }
   
   # user data
   user_data = data.template_cloudinit_config.cloudinit-httpd.rendered
@@ -109,6 +141,7 @@ resource "aws_instance" "lb-server" {
   tags = { 
    Name = "lb-${var.ENV}-server"
    }
+      depends_on = ["aws_instance.salt-master-server"]
 
   # the VPC subnet
   subnet_id = element(var.PUBLIC_SUBNETS, 0)
@@ -119,27 +152,11 @@ resource "aws_instance" "lb-server" {
   # the public SSH key
   #key_name = aws_key_pair.mykeypair.key_name
   
+  provisioner "local-exec" {
+    command =  "echo '${aws_instance.salt-master-server.private_ip} salt' >> /etc/hosts"
+  }
+  
   # user data
   user_data = data.template_cloudinit_config.cloudinit-lb.rendered
 }
 
-#SALT MASTER -Server inicialization
-resource "aws_instance" "salt-master-server" {
-  ami           = var.AMIS[var.AWS_REGION]
-  instance_type = var.INSTANCE_TYPE
-  tags = { 
-   Name = "salt-master-${var.ENV}-server"
-   }
-
-  # the VPC subnet
-  subnet_id = element(var.PUBLIC_SUBNETS, 1)
-
-  # the security group
-  vpc_security_group_ids = [aws_security_group.allow-ssh.id]
-
-  # the public SSH key
-  key_name = "frankfurt_key_pair"
-  
-  # user data
-  user_data = data.template_cloudinit_config.cloudinit-salt-master.rendered
-}
